@@ -6,7 +6,7 @@ cd /d %~dp0
 REM Manually configure the JDK directory (< 10)
 set JAVA_HOME_1=D:\java\jdk1.8.0_51
 set JAVA_HOME_2=D:\java\zulu10.1+11-jdk10-win_x64
-REM ...
+REM ... and so on
 
 :begin
 cls
@@ -26,10 +26,9 @@ set index=%index: =%
 
 if not defined JAVA_HOME_%index% goto error
 
-REM wmic ENVIRONMENT where "name='JAVA_HOME'" delete
-REM wmic ENVIRONMENT create name="JAVA_HOME",username="<system>",VariableValue="%TARGET_JAVA_HOME%"
 wmic ENVIRONMENT where "name='JAVA_HOME' and username='<system>'" set VariableValue="!JAVA_HOME_%index%!"
 call refreshEnv
+
 :end
 echo press any key to exit.
 pause>nul&exit
