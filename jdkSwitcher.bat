@@ -1,27 +1,28 @@
 @echo off
 setlocal enabledelayedexpansion
+title jdk switcher    -- made by Abe
 reg query HKU\S-1-5-20>nul 2>nul||echo please run with administrator.&&pause>nul&&exit
 cd /d %~dp0
 
-REM Manually configure the JDK directory (< 10)
-set JAVA_HOME_1=D:\java\jdk1.8.0_51
-set JAVA_HOME_2=D:\java\zulu10.1+11-jdk10-win_x64
-REM ... and so on
-
 :begin
 cls
+set index=0
+echo current: %JAVA_HOME%
 echo.
-echo               version list
+echo.                  versionlist
 echo +-----+---------------------------------------+
 echo.
-for /L %%i in (1, 1, 9) do (
-	if defined JAVA_HOME_%%i echo   [ %%i ]  !JAVA_HOME_%%i!
+for /d %%i in (D:\java\jdk\*) do (
+	set /a index=!index!+1
+	echo   [ !index! ]  %%i
+	set JAVA_HOME_!index!=%%i
 )
 echo.
 echo +-----+---------------------------------------+
 
 :select
-set /p index=please enter:
+set index=
+set /p index=please choice:
 set index=%index: =%
 
 if not defined JAVA_HOME_%index% goto error
